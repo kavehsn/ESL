@@ -157,83 +157,63 @@ and thus so long as $\bm{X'X}$ is non-singular, the LS estimator of $\hat{\beta}
 \end{frame}
 \subsection{Linear classification}
 \begin{frame}{Logit models}
+Now let us consider the case , where the dependent variable $Y_i$ can assume only two categories (say win or lose), and hence two discrete values (i.e. $Y_i=0$ or $Y_i=1$), where as the vector of independent variables are continuous, say $X_i\in\mathbb{R}^p$.
 
-\end{frame}
-
-\begin{frame}
-\begin{itemize}
-\item{} We may assume that process of signs $\{s(y_t)\}_{t=0}^{\infty}$ follows a first order Markov process - i.e.
-\begin{align*}
-\begin{array}{l}
-P[y_t\geq 0\mid \bm{S}_{t-1},\mathcal{I}_{t-1}]=\\
-P[y_t\geq0\mid y_{t-1}\geq0,\mathcal{I}_{t-1}]^{s(y_{t-1})}P[y_t\geq0\mid y_{t-1}<0, \mathcal{I}_{t-1}]^{1-s(y_{t-1})}\\
-P[y_t< 0\mid \bm{S}_{t-1},\mathcal{I}_{t-1}]=\\
-P[y_t<0\mid y_{t-1}\geq0,\mathcal{I}_{t-1}]^{s(y_{t-1})}P[y_t<0\mid y_{t-1}<0,\mathcal{I}_{t-1}]^{1-s(y_{t-1})}
-\end{array}
-\end{align*}
-\item{} Thus, it can be shown that the test statistic is given by
-\begin{equation*}
-\tilde{S}L_{n}(\beta _{1})=\sum\limits_{t=1}^{n}\tilde{a}_{t}(\beta _{1})%
-s(y_{t})+\sum\limits_{t=1}^{n}\tilde{b}_{t}(\beta _{1})%
-s(y_{t})s(y_{t-1}),
-\end{equation*}%
-where%
-\begin{equation*}
-\tilde{a}_{1}(\beta _{1})=\ln \left\{ \frac{1-P\left[ \varepsilon_{1}<-\beta
-_{1}'x_{0}\mid\mathcal{I}_{0}\right] }{P\left[ \varepsilon_{1}<-\beta _{1}^{^{\prime
-}}x_{0}\mid\mathcal{I}_{0}\right] }\right\} ,\quad\tilde{b}_{1}(\beta _{1})=0
-\end{equation*}%
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\begin{itemize}
-\item{} and for $t=2,...,n$,%
-\begin{equation*}
-\begin{tabular}{l}
-$\tilde{a}_{t}(\beta _{1})=\ln \left\{ \frac{1-\frac{P\left[
-\varepsilon_{t}<-\beta_1'x_{t-1},\text{ }\varepsilon_{t-1}<-\beta _{1}'
-x_{t-2}\mid\mathcal{I}_{t-1}\right] }{P\left[ \varepsilon_{t-1}<-\beta _{1}'
-x_{t-2}\mid\mathcal{I}_{t-1}\right] }}{\frac{P\left[ \varepsilon_{t}<-\beta _{1}'
-x_{t-1},\text{ }\varepsilon_{t-1}<-\beta_1'x_{t-2}\mid\mathcal{I}_{t-1}\right] }{P%
-\left[ \varepsilon_{t-1}<-\beta_1'x_{t-2}\mid\mathcal{I}_{t-1}\right] }}\right\} $ \\ 
-\\ 
-$\tilde{b}_{t}(\beta _{1})=\ln \left\{ \frac{1-\left( \frac{P\left[
-\varepsilon_{t}<-\beta_1'x_{t-1}\mid\mathcal{I}_{t-1}\right] }{1-P\left[
-\varepsilon_{t-1}<-\beta_1'x_{t-2}\mid\mathcal{I}_{t-1}\right] }-\frac{P\left[ 
-\text{ }\varepsilon_{t-1}<-\beta_1'x_{t-2},\text{ }\varepsilon_{t}<-\beta
-_{1}'x_{t-1}\mid\mathcal{I}_{t-1}\right] }{1-P\left[ \varepsilon_{t-1}<-\beta
-_{1}'x_{t-2}\mid\mathcal{I}_{t-1}\right] }\right) }{\frac{P\left[
-\varepsilon_{t}<-\beta_1'x_{t-1}\mid\mathcal{I}_{t-1}\right] }{1-P\left[
-\varepsilon_{t-1}<-\beta_1'x_{t-2}\mid\mathcal{I}_{t-1}\right] }-\frac{P\left[ 
-\text{ }\varepsilon_{t-1}<-\beta_1'x_{t-2},\text{ }\varepsilon_{t}<-\beta
-_{1}'x_{t-1}\mid\mathcal{I}_{t-1}\right] }{1-P\left[ \varepsilon_{t-1}<-\beta
-_{1}'x_{t-2}\mid\mathcal{I}_{t-1}\right] }}\right\} $\\
-$\textcolor{white}{\tilde{b}_{t}(\beta _{1})=}-\ln \left\{ \frac{1-\frac{%
-P\left[ \varepsilon_{t}<-\beta_1'x_{t-1},\text{ }%
-\varepsilon_{t-1}<-\beta_1'x_{t-2}\mid\mathcal{I}_{t-1}\right] }{P\left[
-\varepsilon_{t-1}<-\beta_1'x_{t-2}\mid\mathcal{I}_{t-1}\right] }}{\frac{P\left[
-\varepsilon_{t}<-\beta_1'x_{t-1},\text{ }\varepsilon_{t-1}<-\beta _{1}'
-x_{t-2}\mid\mathcal{I}_{t-1}\right] }{P\left[ \varepsilon_{t-1}<-\beta _{1}'
-x_{t-2}\mid\mathcal{I}_{t-1}\right] }}\right\} $%
-\end{tabular}%
-\end{equation*}%
-\end{itemize}
-\end{frame}
-
-\begin{frame}{The problem}
-\begin{block}{The weights}
-The problem consists of evaluation the univariate and bivariate probabilities
+In order to restrict $Y_i$ to $0$ and $1$. In this case it would make sense to make the probability of $Y_i=1$ and not the value of $Y_i$ itself.  This leads to a probability model, which specifies the the probbility of the outcome as a function of the predictor:
+\begin{eqnarray}
+P[Y_i=1]&=&P[X_i,\beta]\\
+P[Y_i=0]&=&1-P[X_i,\beta]
+\end{eqnarray}
+Since $P$ is a probability, it is bounded between $0$ and $1$. The regression equation may be revived by briefly denoting
 \[
-P\left[ \varepsilon_{t}<-\beta_1'x_{t-1},\text{ }%
-\varepsilon_{t-1}<-\beta_1'x_{t-2}<0\mid\mathcal{I}_{t-1} \right]
+P(X_i,\beta)=X_i'\beta
+\]
+\end{frame}
+
+\begin{frame}
+As we wish the pobability to vary monotically with $X$, we may use a \textit{sigmoid} function:
+\begin{equation}
+P(X_i,\beta)=\frac{\exp(\beta'X_i)}{1+\exp(\beta'X_i)}
+\end{equation}
+Let us denote $Z_i=\beta'X_i$, then
+\[
+\lim_{z\rightarrow\infty}\frac{\exp(z)}{1+\exp(z)}=1
 \]
 and
 \[
-\quad P\left[ \varepsilon_{t}<-\beta_1'x_{t-1}\mid\mathcal{I}_{t-1}\right]
+\lim_{z\rightarrow-\infty}\frac{\exp(z)}{1+\exp(z)}=0
 \]
-for $t=1,\cdots,T$
-\end{block}
+\end{frame}
+
+\begin{frame}
+Therefore,
+\[
+P[Y_i=1]=\frac{\exp(\beta'X)}{1+\exp(\beta'X)}
+\]
+and
+\[
+P[Y_i=0]=\frac{1}{1+\exp(\beta'X)}
+\]
+Alternatively, one could look at the odd $P[Y_i=1]/P[Y_i=0]$, which may be expressed as
+\begin{eqnarray*}
+\frac{P[Y_i=1]}{P[Y_i=0]}&=&\frac{\exp(\beta'X)}{1+\exp(\beta'X)}[1+\exp(\beta'X)].\\
+&=&\exp(\beta'X).
+\end{eqnarray*}
+now taking the logarithm from both sides will yield
+\begin{equation}
+\log(odds)=\beta'X
+\end{equation}
+where now $\log(odds)$ is no longer bounded by $0$ and $1$.
+\end{frame}
+\section{Nearet-neigbour algorithm}
+\begin{frame}{Nearet-neighbour algorithm}
+\begin{itemize}
+\item{} A non-parametric approach used for both \textit{classification} and \textit{regression}
+\item{} Input consists of the $k$ closest training examples in the feature space.
+\item{} Output depends on whether $K-NN$ is used or classification or regression.
+\item{} For classification, the output is a class membership
+\item{} For regression, this value is the average of the $k$ nearest neighbbours
+\end{itemize}
 \end{frame}
 \begin{frame}{Dependence modelling using copulas}
 \begin{itemize}

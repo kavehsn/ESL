@@ -12,6 +12,9 @@
 \usepackage{subfigure}
 \usepackage[round]{natbib}
 
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+
 \title{Elements of statistical learning:
 Chapter 2}
 \centering
@@ -213,48 +216,80 @@ where now $\log(odds)$ is no longer bounded by $0$ and $1$.
 \item{} Output depends on whether $K-NN$ is used or classification or regression.
 \item{} For classification, the output is a class membership
 \item{} For regression, this value is the average of the $k$ nearest neighbbours
+\item{} Specifically it can be defined as
+\begin{equation}
+\hat{Y}(x)=\frac{1}{k}\sum\limits_{x_i\in N_k(x)}y_i,
+\end{equation}
+where $N_k(x)$ is the neighbourhood of $x$ defined by the $k$ closest points $x_i$ in the training sample.
+\item{} In other words, find the $k$ nearest neighbours with $x_i$ closest to $x$, and average their responses $y_i$.
 \end{itemize}
 \end{frame}
-\begin{frame}{Dependence modelling using copulas}
+\section{Statistical decision theory}
+\begin{frame}{Statistical decision theory}
 \begin{itemize}
-\item {} As the mediangale assumption allows for non-linear serial dependence, testing assumption A1 by considering linear correlation is inappropriate. 
-
-\item{} we suggest fitting copula models, which provide the means of separating the marginal distribution of the process from their respective dependence structure.
-\item{} For instance, the marginals can be assumed to possess standard normal distributions, while the nonlinear dependency is modeled using rank correlation measures (e.g. Kendall Tau) and copulas, where the latter are invariant under monotonic transformations; hence, they are not affected by the marginal distributions [see ].
+\item{} Let random variables $X\in \mathbb{R}^p$ and $Y\in\mathbb{R}$ with joint distribution function $F(x,y)$.
+\item{} A function $g(X)$ is sought after for predicting $Y$, given values of the input $X$.
+\item{} This theory requires a loss function $L(Y,g(X))$ for penalizing errors in prediction.
+\item{} The most common and convenient is squared error loss 
+\begin{equation}
+L(Y,g(X))=(Y-g(X))^2
+\end{equation}
+which gives us the following criterion
+\begin{equation}\label{eq: EPE}
+EPE=\mathbb{E}(Y-g(X))^2
+\end{equation}
 \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{EXTRA: Some probability recap}
+The expectation operator $\mathbb{E}$ is defined for discrete and continuous variables as follows
 \begin{itemize}
-\item{}A special case is where $\varepsilon_1,\varepsilon_2,\cdots,\varepsilon_{T-1},\varepsilon_T$ are distributed according to $N(0,1)$. As suggested before, since the form of the serial dependence of the errors is non-linear, we may estimate the bivariate probabilities using copulas. 
-
-\item{}The latter stem from a Theorem brought forward by, which states that there is a copula $C$ such that
+\item{} Discrete variables:
 \[
-F_{\varepsilon}(-\beta' x_0,\cdots,-\beta' x_{n-1})=C(F_1(-\beta' x_0),\cdots,F_n(-\beta' x_{n-1})).
+\mathbb{E}(X)=\sum\limits_{i\in k}p_ix_i
 \]
-\item{}Therefore, as noted earlier, the bivariate probabilities can be calculated using copulas, which separate the marginal distribution of the error terms from their dependence structure. We may consider a rank correlation measure (e.g. Kendall Tau) as the measure of non-linear dependency and choose the Gaussian copula for evaluating the bivariate probabilities $P\left[ \text{ }\varepsilon_{t-1}<\cdot ,\-
-\text{ }\varepsilon_{t}<\cdot \mid \mathcal{I}_{t-1}\right]$.
+where $k$ are the number of categories.
+E.g. A coin has two possible states of head (quantified as $1$) and tail (quantified as $0$) with equal probability. Therefore, the expectated value of the outcome of a coin toss is
+\[
+\E(X)=0.5\times 0 +0.5\times 1=0.5
+\]
 \end{itemize}
 \end{frame}
 
 \begin{frame}
 \begin{itemize}
-\item{} First let us forget about the Theorem mentioned earlier, where $s(\varepsilon_1),\cdots, s(\varepsilon_n)$ are i.i.d conditional on $\mathcal{I}_{t-1}$. Let us explore this from an earlier point and what led to this Theorem in . We know from the mediangale assumption that
-\begin{align*}
-\begin{array}{l}
-P[s(\varepsilon_t)=s_t\mid s(\varepsilon_{t-1})=s_{t-1},\cdots,s(\varepsilon_{1})=s_{1}]=\\
-P[\varepsilon_t\geq0\mid \varepsilon_{t-1},\cdots,\varepsilon_{1}]^{s(\varepsilon_t)}
-P[\varepsilon_t<0\mid \varepsilon_{t-1},\cdots,\varepsilon_{1}]^{1-s(\varepsilon_t)}=\frac{1}{2}
-\end{array}
-\end{align*}
-\item{} As this corresponds only to the median, it is only true \textit{iff} both sides of the inequality are zero. SInce the probabilities $P[\varepsilon_t\geq0\mid \varepsilon_{t-1},\cdots,\varepsilon_{1}]$ and $P[\varepsilon_t<0\mid \varepsilon_{t-1},\cdots,\varepsilon_{1}]$ are the same and equal to $1/2$ for all $t=1,\cdots,n$. Thus, it can be argued that $s(\varepsilon_1),\cdots,s(\varepsilon_n)$ which are defined by the aformentioned probabilties can be considered i.i.d, as their distribution is determined by the said probabilities, which are identical over time.
+\item{} Continuous variables:
+\[
+\E[X]=\int_{\R}xf(x)dx
+\]
+if density $f(x)$ exists. Otherwise,
+\[
+\E[X]=\int_{\R}xdF(x)
+\]
+(noting that $dF(X)/dx=f(x))$
+\item{} Multivatiate continuous variable
+\[
+\E[g(X_1,\cdots,X_n)]=\int\cdots\int g(x_1,\cdots,x_n)dF(x_1,\cdots,x_n)
+\]
+and where the density $f(x_1,\cdots,x_n)$ exists
+\[
+\E[g(X_1,\cdots,X_n)]=\int\cdots\int g(x_1,\cdots,x_n)f(x_1,\cdots,x_n)dx_1\cdots dx_n
+\]
 \end{itemize}
 \end{frame}
 
+
 \begin{frame}
-\begin{itemize}
-\item{} And here is the proposition (pay careful attention to the last paragraph):
-\end{itemize}
+Finally, note that 
+\[
+F(x,y)=F(x\mid y)F(y)
+\]
+Therefore, returning to (\ref{eq: EPE})
+\begin{eqnarray*}
+\E(Y-g(X))&=&\int\int(y-g(x))^2dF(y,x)\\
+&=&\int\int(y-g(x))^2f(y,x)dydx\\
+&=&\int\int(y-g(x))^2f(y\mid x)f(x)dydx
+\end{eqnarray*}
 \end{frame}
 
 \begin{frame}

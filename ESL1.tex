@@ -5,110 +5,159 @@
 \usepackage{bm}
 \usepackage{graphicx}
 \usepackage{xcolor}
+\usepackage[document]{ragged2e}
 \usepackage{graphicx}
 \usepackage{placeins}
 \usepackage{float}
 \usepackage{subfigure}
 \usepackage[round]{natbib}
 
-\title{POS tests for predictive regressions}
+\title{Elements of statistical learning:
+Chapter 2}
 \centering
 \begin{document}
 \maketitle
+
 \begin{frame}{Content}
-
-\begin{itemize}
-\item Framework 
-\item The test statistic in the presence of stochastic regressors 
-\item The problem
-\item Dependence modelling using copulas
-\end{itemize}
-
-\end{frame}
-\begin{frame}{Framework}
-\begin{itemize}
-\item{} Predictive regressions assume the form
-\begin{equation}
-y_t=\beta x_{t-1}+\varepsilon_t\quad t=1,\cdots,n
-\end{equation}
- \item{} $x_t$ is usually a highly persistent regressor such that the disturbances of the regressor are correlated with the error terms of the predictive regression. In a framework considered by, $x_t$ is assumed to follow a stationary AR($1$) process, such that
-\[
-x_t=\theta x_{t-1}+u_t
-\]
-where $(u_t,\varepsilon_t)$ are bivariate normal distribution, with the covariance matrix
-\[
-\begin{bmatrix}
-1&\sigma_{\varepsilon u}\\
-\sigma_{\varepsilon u}&\sigma^2_u
-\end{bmatrix}
-\] 
-\item{} Therefore, $u_t$ and $\varepsilon_t$ are contemporaneously correlated with $corr(\varepsilon_t,u_t)\neq 0$, which implies that there is feedback from $u_t$ to $x_t$, through $\varepsilon_t$, and as such $corr(u_t,x_{t+j})\neq0$ for $j\geq 0$.
-\end{itemize}
-\end{frame}
-\begin{frame}{POS-based tests}
-\begin{itemize}
-\item{}To build our POS-based tests in the context of predictive regressions. Let $y_t$ be explained by a vector varible $x_t$, such that
-\begin{equation}\label{eq: model}
-y_t=\beta x_{t-1}+\varepsilon_t,\quad t=1,\cdots,n
-\end{equation}
-where $x_t$ is a $k\times 1$ vector of stochastic variables and $\beta\in \mathbb{R}^k$ is a $k\times 1$ vector of unknown parameters. Furthermore, following, define the information vector $\mathcal{I}_{t}=[x_0',\cdots,x_t']$ defined for $t=1,\cdots,T-1$, with the convention that $\mathcal{I}_0=x_0$.
-\item{}. Suppose we wish to test the null hypothesis
-\[
-H_0:\beta=0
-\] 
-against the alternative
-\[
-H_1: \beta=\beta_1
-\]
-\end{itemize}
+\tableofcontents
 \end{frame}
 
-\begin{frame}
-\begin{itemize}
-\item {} To build their tests assume that the error terms has a conditional zero median, such that 
-\begin{equation}\label{eq: errors}
-P[\varepsilon_t\geq0\mid \mathcal{I}_{t-1}]=P[\varepsilon_t<0\mid \mathcal{I}_{t-1}]
-\end{equation}
-\item{} Tests derived under (\ref{eq: errors}) are interpreted as tests of whether the conditional median of $y_t$ is predictable using $x_{t-1}$. 
-\item{} To build our POS-bases tests, we follow by further assuming that the error terms follow a mediangale process conditional on $\mathcal{I}_{t-1}$
-\[
-P[\varepsilon_t\geq 0 \mid \varepsilon_1,\cdots,\varepsilon_{t-1}, \mathcal{I}_{t-1}]=P[\varepsilon_t< 0 \mid \varepsilon_1,\cdots,\varepsilon_{t-1}, \mathcal{I}_{t-1}]=\frac{1}{2} 
-\]
-\item{} This assumption allows for serial (non-linear) dependence between the error terms.
-\end{itemize}
-\end{frame}
+\section{Introduction}
 
-\begin{frame}
-\begin{block}{Theorem}
-Under the assumption (\ref{eq: errors}) and given the model (\ref{eq: model}), the signs $s(\varepsilon_1),\cdots,s(\varepsilon_n)$ are i.i.d conditional on $\mathcal{I}_{t-1}$, according to the distribution
-\[
-P[s(\varepsilon_t)=1\mid \mathcal{I}_{t-1}]=P[s(\varepsilon_t)=0\mid \mathcal{I}_{t-1}]=\frac{1}{2},\quad t=1,\cdots,n
-\]
+\begin{frame}{Introduction}
+\begin{block}{Supervised learning}
+Goal is to use \textit{inputs} to predict \textit{outputs}.
+\end{block}
+\begin{itemize}
+\item{inputs} are also referred to as \textit{predictors}, \textit{features} or \textit{independent variable}
+\item{outputs} are also referred to as \textit{response} or \textit{dependent variables}
+\end{itemize}
+\medskip
+The outputs may be
+
+\begin{itemize}
+\item{} quantitative (takes values in $\mathbb{R}$)
+\item{} qualitative (also known as categorical or discrete)
+\begin{itemize}
+\item{} Ordered (e.g. small, medium or large)
+\item{} Unordered (e.g. pass or fail, on or off)
+\end{itemize}
+\end{itemize}
+\begin{block}{Regression vs classification}
+We use \textit{regression} to predict quantitative outputs and \textit{classification} to predict qualitative outputs.
 \end{block}
 \end{frame}
-
-\begin{frame}
-\begin{itemize}
-\item{} We define the vector of signs $U(n)=(s(y_1),\cdots,s(y_n))'$, where $s(y_t)=\mathbbm{1}_{\mathbb{R}^+\cup 0}\{y_t\}$. Thus, the likelihood function of the sample in terms of signs under the null hypothesis is
+\begin{frame}{Notations}
+For different predictors $\{X_k\}_{k=1}^p$ across different observations $i=1,\cdots,n$ denote
 \begin{eqnarray*}
-L(U(n),0)&=&\prod\limits_{t=1}^{n}P[s(y_t)=s_t\mid \mathcal{I}_{t-1}]\\
-&=&\prod\limits_{t=1}^{n}P[y_t\geq 0\mid \mathcal{I}_{t-1}]^{s_t}P[y_t< 0\mid \mathcal{I}_{t-1}]^{1-s_t}\\
-&=&\prod\limits_{t=1}^{n}P[\varepsilon_t\geq 0\mid \mathcal{I}_{t-1}]^{s_t}P[\varepsilon_t< 0\mid \mathcal{I}_{t-1}]^{1-s_t}\\
-&=&\left(\frac{1}{2}\right)^n
+ &X_{i,k}&\text{ for random variable and }x_{i,k}\text{ for an observation}\\
+&X_i&\text{ for a $p\times 1$ vector of variables } - i.e. X_i=[X_{i,1},\cdots,X_{i,p}]'\\
+&\bm{X}&\text{ for a $N\times p$ matrix of variables across different obvs}
 \end{eqnarray*}
-\end{itemize}
+In other words
+\[
+\bm{X}=
+\begin{bmatrix}
+X_{11}&\cdots &X{1p}\\
+X_{21}&\cdots &X{2p}\\
+\vdots&\ddots&\vdots\\
+X_{n1}&\cdots&X_{np}
+\end{bmatrix}
+=
+\begin{bmatrix}
+X_{1}'\\
+X_{2}'\\
+\vdots\\
+X_{n}'
+\end{bmatrix}
+\]
+Therefore, denotes $(X_i,Y_i)$ as the random variables and $(x_i,y_i)$ as the observed values at $i$.
+\end{frame}
+\section{Linear models and least squares}
+\subsection{Linear regression}
+\begin{frame}{Linear models and least squares}
+To predict $Y$ (which would be denoted by $\hat{Y}$), we use the linear regression model, which may be expressed as
+\begin{equation}\label{eq: LS1}
+Y_i=\beta_0+\beta_1 X_{i,1}+\cdots+\beta_p X_{i,p}+\epsilon_i,\quad i=1,\cdots,n
+\end{equation}
+or as
+\begin{equation}\label{eq: LS2}
+Y_i=\beta_0+\sum\limits_{k=1}^P\beta_k X_{i,k}+\epsilon_i,\quad i=1,\cdots,n
+\end{equation}
+or as
+\begin{equation}\label{eq: LS3}
+Y_i=X_i'\beta+\epsilon_i,\quad,i=1,\cdots,n
+\end{equation}
+where $X_i=[1,X_{i,1},\cdots,X_{i,p}]'$ and $\beta=[\beta_0,\beta_1,\cdots,\beta_p]'$ are $(p+1)\times 1$ vectors.
 \end{frame}
 
 \begin{frame}
-\begin{itemize}
-\item{} Under the alternative, the signs $s(y_1),\cdots,s(y_n)$ are no longer independent
+In matrix notation, the above can be expressed as
+\begin{equation}\label{eq: LS4}
+\bm{Y}=\bm{X}\beta+\bm{\epsilon}
+\end{equation}
+which if expanded is expressed as follows
+\begin{equation}
+\begin{bmatrix}
+Y_1\\
+Y_2\\
+\vdots\\
+Y_n
+\end{bmatrix}=
+\begin{bmatrix}
+1&X_{1,1}&X_{1,2}&\cdots&X_{1,p}\\
+1&X_{2,1}&X_{2,2}&\cdots&X_{2,p}\\
+\vdots&\vdots&\ddots&\ddots&\vdots\\
+1&X_{n,1}&X_{n,2}&\cdots&X_{n,p}
+\end{bmatrix}
+\begin{bmatrix}
+\beta_0\\
+\beta_1\\
+\vdots\\
+\beta_p
+\end{bmatrix}+
+\begin{bmatrix}
+\epsilon_1\\
+\epsilon_2\\
+\vdots\\
+\epsilon_n
+\end{bmatrix}
+\end{equation}
+\end{frame}
+
+\begin{frame}{Least squares estimation}
+The least squares estimation in one approach to fit the model. In essence, we find the coefficiens $\beta$ that minimize the sum of squared residuals.
+Thus, we wish to minimize $RSS(\beta)$
+\[
+\arg \min_{\beta} RSS(\beta)\text{ or }(\bm{y}-\bm{X\beta})'(\bm{y}-\bm{X\beta})
+\]
+The above can be rearranged and expanded to (which is not necessary, as chain rule can be used)
 \begin{eqnarray*}
-L(U(n),\beta_1)&=&\prod\limits_{t=1}^{n}P[s(y_t)=s_t\mid \bm{S}_{t-1},\mathcal{I}_{t-1}]\\
-&=&\prod\limits_{t=1}^{n}P[y_t\geq 0\mid \bm{S}_{t-1},\mathcal{I}_{t-1}]^{s(y_t)}\times\\
-&&P[y_t< 0\mid \bm{S}_{t-1},\mathcal{I}_{t-1}]^{1-s(y_t)}
+(\bm{y}-\bm{X\beta})'(\bm{y}-\bm{X\beta})&=&(\bm{y}'-\bm{\beta' X'})(\bm{y}-\bm{X\beta})\\
+&=&\bm{y}'\bm{y}-\bm{y}'\bm{X\beta}-\bm{\beta' X'}\bm{y}+\bm{\beta' X'}\bm{X\beta}
 \end{eqnarray*}
-\item{} where $\bm{S}_{t-1}=\{s(y_{t-1})=s_{t-1},\cdots,s(y_1)=s_1\}$ with $\bm{S}_0=\{\emptyset\}$ and $P[s(y_1)=s_1\mid \bm{S}_0]=P[s(y_1)=s_1]$.
-\end{itemize}
+\end{frame}
+
+\begin{frame}
+Differentiating with respect to $\beta$ yields
+\begin{eqnarray*}
+\frac{\partial RSS(\beta)}{\partial \beta}&=&0-\bm{X'y}-\bm{X'y}+2\beta \bm{X'X}\\
+&=&-2\bm{X'y}+2\beta \bm{X'X}
+\end{eqnarray*}
+and as this is a minimization problem 
+\begin{eqnarray*}
+\frac{\partial RSS(\beta)}{\partial \beta}&=&0\\
+-2\bm{X'y}+2\beta \bm{X'X}&=&0\\
+\beta \bm{X'X}&=&\bm{X'y}
+\end{eqnarray*}
+and thus so long as $\bm{X'X}$ is non-singular, the LS estimator of $\hat{\beta}$ is
+\begin{equation}
+\hat{\beta}=(\bm{X'X})^{-1}\bm{X'y}
+\end{equation}
+\end{frame}
+\subsection{Linear classification}
+\begin{frame}{Logit models}
+
 \end{frame}
 
 \begin{frame}

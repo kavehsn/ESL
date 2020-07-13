@@ -392,7 +392,39 @@ which implies that we may express (\ref{eq: l1}) as
 \sum\limits_{i=1}^{n}sgn(y_i-g)&=&0
 \end{eqnarray*}
 \end{frame}
+\section{MSE}
+\begin{frame}
+The mean squared error at a nominated test point $x_0$ can be obtained by
+\begin{eqnarray*}
+MSE(x_0)&=&\E_{T}[(f(x_0)-\hat{y}_0)^2]\\
+&=&\E_{T}[(f(x_0)\underbrace{-\E_T(\hat{y}_0)+\E_T(\hat{y}_0)}_{\text{add and deduct}}-\hat{y}_0)^2]
+\end{eqnarray*}
+Noting that by noting $\underbrace{f(x_0)-\E_T(\hat{y}_0)}_{a}$ and $\underbrace{\E_T(\hat{y}_0)-\hat{y}_0}_{a}$, the above is equivalent to $\E_T[(a+b)^2]$, and such can be expanded as follows
+\begin{eqnarray*}
+MSE(x_0)&=&\E_{T}[(f(x_0)-\E_T(\hat{y}_0))^2+(\E_T(\hat{y}_0)-\hat{y}_0)^2\\
+&+&2[(f(x_0)-\E_T(\hat{y}_0))(\E_T(\hat{y}_0)-\hat{y}_0)]
+\end{eqnarray*}
+\end{frame}
 
+\begin{frame}
+which may further get expanded as
+\begin{eqnarray*}
+MSE(x_0)&=&\E_{T}[(f(x_0)-\E_T(\hat{y}_0))^2+(\E_T(\hat{y}_0)-\hat{y}_0)^2\\
+&+&2f(x_0)\E_T(\hat{y}_0)-2f(x_0)\hat{y}_0-2\E_T(\hat{y}_0)\E_T(\hat{y}_0)+2\E_T(\hat{y}_0)\hat{y}_0]\\
+&=&\E_{T}[(f(x_0)-\E_T(\hat{y}_0))^2]+\E_T[(\E_T(\hat{y}_0)-\hat{y}_0)^2]\\
+&+&2f(x_0)^2-2f(x_0)\hat{y}_0-2f(x_0)^2+2f(x_0)\hat{y}_0\\
+&=&\E_{T}[(f(x_0)-\E_T(\hat{y}_0))^2]+\E_T[(\E_T(\hat{y}_0)-\hat{y}_0)^2]
+\end{eqnarray*}
+Note that by definition
+\begin{itemize}
+\item{} Variance: $\E_{T}[(f(x_0)-\E_T(\hat{y}_0))^2]$; and
+\item{} Bias: $\E_T[(\E_T(\hat{y}_0)-\hat{y}_0)]$
+\end{itemize}
+Thus,
+\begin{equation}
+MSE(x_0)=\sigma^2_T(\hat{y}_0)+Bias^2(\hat{y}_0)
+\end{equation}
+\end{frame}
 
 %\bibliographystyle{apa}
 %\bibliography{References_Final}

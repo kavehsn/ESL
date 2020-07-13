@@ -225,7 +225,8 @@ where $N_k(x)$ is the neighbourhood of $x$ defined by the $k$ closest points $x_
 \end{itemize}
 \end{frame}
 \section{Statistical decision theory}
-\begin{frame}{Statistical decision theory}
+\subsection{L2 loss function}
+\begin{frame}{L2 loss function}
 \begin{itemize}
 \item{} Let random variables $X\in \mathbb{R}^p$ and $Y\in\mathbb{R}$ with joint distribution function $F(x,y)$.
 \item{} A function $g(X)$ is sought after for predicting $Y$, given values of the input $X$.
@@ -236,7 +237,7 @@ L(Y,g(X))=(Y-g(X))^2
 \end{equation}
 which gives us the following criterion
 \begin{equation}\label{eq: EPE}
-EPE=\mathbb{E}(Y-g(X))^2
+EPE=\mathbb{E}[(Y-g(X))^2]
 \end{equation}
 \end{itemize}
 \end{frame}
@@ -269,11 +270,11 @@ if density $f(x)$ exists. Otherwise,
 (noting that $dF(X)/dx=f(x))$
 \item{} Multivatiate continuous variable
 \[
-\E[g(X_1,\cdots,X_n)]=\int\cdots\int g(x_1,\cdots,x_n)dF(x_1,\cdots,x_n)
+\E[g(X_1,\cdots,X_n)]=\int_{x_1}\cdots\int_{x_n} g(x_1,\cdots,x_n)dF(x_1,\cdots,x_n)
 \]
 and where the density $f(x_1,\cdots,x_n)$ exists
 \[
-\E[g(X_1,\cdots,X_n)]=\int\cdots\int g(x_1,\cdots,x_n)f(x_1,\cdots,x_n)dx_1\cdots dx_n
+\E[g(X_1,\cdots,X_n)]=\int_{x_1}\cdots\int_{x_n} g(x_1,\cdots,x_n)f(x_1,\cdots,x_n)dx_1\cdots dx_n
 \]
 \end{itemize}
 \end{frame}
@@ -281,58 +282,117 @@ and where the density $f(x_1,\cdots,x_n)$ exists
 
 \begin{frame}
 Finally, note that 
-\[
-F(x,y)=F(x\mid y)F(y)
-\]
+\begin{eqnarray*}
+F(x,y)=F(x\mid y)F(y)\\
+F(x,y)=F(y\mid x)F(x)
+\end{eqnarray*}
 Therefore, returning to (\ref{eq: EPE})
 \begin{eqnarray*}
-\E(Y-g(X))&=&\int\int(y-g(x))^2dF(y,x)\\
-&=&\int\int(y-g(x))^2f(y,x)dydx\\
-&=&\int\int(y-g(x))^2f(y\mid x)f(x)dydx
+\E[(Y-g(X))^2]&=&\int_x\int_y(y-g(x))^2dF(y,x)\\
+&=&\int_x\int_y(y-g(x))^2f(y,x)dydx\\
+&=&\int_x\int_y(y-g(x))^2f(y\mid x)f(x)dydx\\
+&=&\int_x\E_{y\mid x}[(Y-g(X))^2\mid X]f(x)dx\\
+&=&\E_X\E_{Y\mid X}[(Y-g(X))^2\mid X]
 \end{eqnarray*}
 \end{frame}
 
 \begin{frame}
 \begin{itemize}
-\item{} Now let us instead assume that we are interested in the signs $\tilde{s}(\varepsilon+c_t)$, where $c_t$ for $t=1,\cdots,n$ are some constants. Then the likelihood function in terms of the signs $\tilde{s}_1,\cdots,\tilde{s}_n$ 
-\begin{align*}
-\begin{array}{l}
-L(\tilde{s}_1,\cdots,\tilde{s}_n\mid X)=\\
-\prod\limits_{t=1}^{n}P[\varepsilon_t\geq -c_t\mid \varepsilon_1,\cdots,\varepsilon_n]^{\tilde{s}_t}P[\varepsilon_t< -c_t \mid \varepsilon_1,\cdots,\varepsilon_n]^{1-\tilde{s}_t}	
-\end{array}
-\end{align*}
-\item{} Now the joint p.m.f. depnends on all the past signs and and thus is no longer $i.i.d$, as it violates the Mediangale assumption (particularly the point about permutations mentioned in Proposition 1 of). In other words, we no longer have that the p.m.fs $P[\varepsilon_t<-c_t\mid \varepsilon_{t-1},\cdots,\varepsilon_{1}]$ are constant and identical over time, so the distribution of the signs $\tilde{s}(\varepsilon_1+c_1),\cdots,\tilde{s}(\varepsilon_n+c_n)$, now dependens on the joint p.m.fs.
+\item{} As the above expression is conditioned on $X$, there is no longer any dependency between $X$ and the function $g$.
+
+\item{} furthermore, $[Y-g]^2$ is a convex function and we may minimize to solve for $f$
+\begin{eqnarray*}
+g(x)&=&\arg\min_{g}\E_{y\mid x}[(Y-g(X))^2\mid X=x]\\
+&\rightarrow& \frac{\partial}{\partial g}\int[y-g]^2 f(y\mid x)dy=0\\
+&\rightarrow& \int \frac{\partial}{\partial g}[y-g]^2 f(y\mid x)dy=0\\
+&\rightarrow& -2\int[y-g]  f(y\mid x)dy=0\\
+&\rightarrow& 2g\int f(y\mid x)dy=2\int y  f(y\mid x)dy\\
+&\rightarrow& 2g\int f(y\mid x)dy=2\E_{Y\mid X}[Y\mid X=x]
+\end{eqnarray*}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Alternative proof}
+\begin{frame}
+Note that 
+\[
+\int_{\R}f(y\mid x)dy=1
+\]
 \begin{itemize}
-\item{}Under the null hypotheis, it is evident that
+\item{}Thus
 \[
-P[\varepsilon_t\geq0\mid X]=P[\varepsilon_t<0\mid X],\quad t=1,\cdots,n
+\E[Y\mid X=x]=g(x)
 \]
-is equivalent to
-\[
-P[y_t\geq0\mid X]=P[y_t<0\mid X],\quad t=1,\cdots,n
-\]
-\item{}Therefore, the mediangale assumption can be extended to $y_1,\cdots,y_n$:
-\[
-P[y_t\geq0\mid y_1,\cdots,y_n,X]=P[y_t<0\mid y_1,\cdots,y_n,X]=\frac{1}{2}
-\]
+\item{} This conditional function is also known as the regression function. Thus, the best predictor of $Y$ at any point $X=x$ is the conditional mean.
 \end{itemize}
 \end{frame}
-
-\begin{frame}{Alternative proof}
+\subsection{L1 loss function}
+\begin{frame}{L1 loss function}
 \begin{itemize}
-\item{}Then the variables $s(y_1),\cdots,s(y_n)$ are i.i.d conditional on $X$ according to the distribution
+\item{} The L2 loss function is analytically more desirable, but an L1 criteria of the sort
 \[
-P[s(y_t)=1\mid X]=P[s(y_t)=0\mid X]=\frac{1}{2},\quad t=1,\cdots,n
+\E[\lvert Y-g(X)\lvert]
 \]
-\item{} Under the alternative hypothesis, however, the mediangale property does not hold for permutations $\pi:i\rightarrow j$ as noted in the Proposition 3.1 of , as the conditional distribution of the signs vary across observations.
-
-\item{} Therefore, the signs $s(u_1),\cdots,s(y_n)$ can no longer be assumed to be i.i.d.
+is more robust to outliers. We may express (\ref{eq: EPE}) in the following manner using the L1 criteria:
+\begin{eqnarray*}
+\E[\lvert Y-g(X)\lvert]=\int\int \lvert Y-g(X)\lvert f(x,y)dydx
+\end{eqnarray*}
+where as before it may be expressed as
+\[
+\E_X\E_{Y\mid X}[\lvert Y-g(X)\lvert\mid X]
+\]
+and minimized by differentiating with respect to $g$ - i.e.
+\[
+\frac{\partial}{\partial g}\int\lvert y-g(x)\lvert f(y\mid x)dy=0
+\]
 \end{itemize}
 \end{frame}
+
+\begin{frame}
+The latter can be approxmiated by
+\begin{eqnarray}\label{eq: l1}
+\begin{split}
+\frac{\partial}{\partial g}\int\lvert y-g\lvert f(y\mid x)dy&=&\frac{\partial}{\partial g}\lim_{n\rightarrow \infty}\frac{1}{n}\sum\limits_{i=1}^n\lvert y_i-g\lvert\\
+&\approx&\frac{\partial}{\partial g}\frac{1}{n}\sum\limits_{i=1}^{n}\lvert y_i-g\lvert
+\end{split}
+\end{eqnarray}
+Note that the absolute function is piecewise 
+\[
+\lvert y_i-g\lvert=
+\begin{cases}
+ y_i-g,\quad y_i-g> 0\\
+g-y_i,\quad y_i-g< 0\\
+0,\quad y_i=g
+\end{cases}
+\]
+\end{frame}
+
+\begin{frame}
+So that taking the derivative is not continuous at zero
+\[
+\frac{\partial}{\partial g}\lvert y_i-g\lvert=
+\begin{cases}
+ -1,\quad y_i-g> 0\\
+1,\quad y_i-g< 0\\
+0,\quad y_i=g
+\end{cases}
+\]
+which is very similar to a sign function - i.e.
+\[
+sgn(z)=
+\begin{cases}
+ -1,\quad z< 0\\
+1,\quad z>0\\
+0,\quad z=0
+\end{cases}
+\]
+which implies that we may express (\ref{eq: l1}) as
+\begin{eqnarray*}
+\frac{\partial}{\partial g}\int\lvert y-g\lvert f(y\mid x)dy&=&0\\
+\frac{1}{n}\sum\limits_{i=1}^{n}-sgn(y_i-g)&=&0\\
+\sum\limits_{i=1}^{n}sgn(y_i-g)&=&0
+\end{eqnarray*}
+\end{frame}
+
 
 %\bibliographystyle{apa}
 %\bibliography{References_Final}

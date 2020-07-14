@@ -300,7 +300,7 @@ Therefore, returning to (\ref{eq: EPE})
 \begin{itemize}
 \item{} As the above expression is conditioned on $X$, there is no longer any dependency between $X$ and the function $g$.
 
-\item{} furthermore, $[Y-g]^2$ is a convex function and we may minimize to solve for $f$
+\item{} furthermore, $[Y-g]^2$ is a convex function and we may minimize to solve for $g$
 \begin{eqnarray*}
 g(x)&=&\arg\min_{g}\E_{y\mid x}[(Y-g(X))^2\mid X=x]\\
 &\rightarrow& \frac{\partial}{\partial g}\int[y-g]^2 f(y\mid x)dy=0\\
@@ -396,7 +396,7 @@ which implies that we may express (\ref{eq: l1}) as
 \begin{frame}
 The mean squared error at a nominated test point $x_0$ for a \textit{deterministic} model of the form
 \[
-Y=f(X)\exp(-8\lvert\lvert X\rvert\rvert^2)
+Y=f(X)=\exp(-8\lvert\lvert X\rvert\rvert^2)
 \]
 without any measurement errors, can be obtained by
 \begin{eqnarray*}

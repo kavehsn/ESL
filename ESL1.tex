@@ -507,6 +507,47 @@ and the last term we get
 g(x_0)\E_{y_0\mid x_0}\E_T[\hat{y}_0]=g(x_0)\E[\hat{y}_0]
 \]
 \end{frame}
+\begin{frame}
+Therefore, since $\E_{y_0\mid x_0}[y_0]=g(x_0)$
+\begin{eqnarray*}
+\E_{y_0\mid x_0}\E_T[(y_0-g(x_0))(g(x_0)-\hat{y}_0)]&=&g(x_0)\E_{y_0\mid x_0}[y_0]-\E_{y_0\mid x_0}[y_0\E_T[\hat{y}_0]]\\
+&-&g(x_0)^2+g(x_0)\E_{y_0\mid x_0}\E_T[\hat{y}_0]\\
+&=&g(x_0)^2-g(x_0)\E_{T}[\hat{y}_0]\\
+&-&g(x_0)^2+g(x_0)\E_T[\hat{y}_0]=0
+\end{eqnarray*}
+Thus,
+\begin{eqnarray*}
+EPE(x_0)&=&\E_{y_0\mid x_0}\E_T[(y_0-g(x_0))^2]+\E_{y_0\mid x_0}\E_T[(g(x_0)-\hat{y}_0)^2]\\
+&=&\sigma^2+\E_{y_0\mid x_0}\E_T[(g(x_0)-\hat{y}_0)^2]\\
+&=&\sigma^2+\underbrace{\E_{y_0\mid x_0}\E_T[g(x_0)^2]-2\E_{y_0\mid x_0}\E_T[g(x_0)\hat{y}_0]}+\E_{y_0\mid x_0}\E_T[\hat{y}_0^2]
+\end{eqnarray*}
+Noting that
+\begin{eqnarray*}
+\E_{y_0\mid x_0}\E_T[(g(x_0)-\E_T[\hat{y}_0])^2]&=&\E_{y_0\mid x_0}\E_T[g(x_0)^2]-2\E_{y_0\mid x_0}\E_T[g(x_0)\hat{y}_0]\\
+&+&\E_{y_0\mid x_0}\E_T[\hat{y}_0]^2
+\end{eqnarray*}
+\end{frame}
+\begin{frame}
+The expression in the brackets can be substituted with
+\[
+ \E_{y_0\mid x_0}\E_T[(g(x_0)-\E_T[\hat{y}_0])^2]-\E_{y_0\mid x_0}\E_T[\hat{y}_0]^2
+\]
+which implies
+\begin{eqnarray*}
+EPE(x_0)&=&\E_{y_0\mid x_0}\E_T[(y_0-g(x_0))^2]+\E_{y_0\mid x_0}\E_T[(g(x_0)-\hat{y}_0)^2]\\
+&=&\sigma^2+\E_{y_0\mid x_0}\E_T[(g(x_0)-\E_T[\hat{y}_0])^2]\\
+&-&\E_{y_0\mid x_0}\E_T[\hat{y}_0]^2+\E_{y_0\mid x_0}\E_T[\hat{y}_0^2]
+\end{eqnarray*}
+noting that
+\[
+\sigma^2_T(\hat{y}_0)=\E_T[\hat{y}_0^2]-\E_T[\hat{y}_0]^2
+\]
+Hence
+\begin{eqnarray*}
+EPE(x_0)&=&\sigma^2(y_0\mid x_0)+\E_{y_0\mid x_0}\E_T[(g(x_0)-\E_T[\hat{y}_0])^2]+\sigma_T^2(\hat{y}_0)\\
+&=&\sigma^2(y_0\mid x_0)+Bias^2(\hat{y}_0)+\sigma_T^2(\hat{y}_0)
+\end{eqnarray*}
+\end{frame}
 %\bibliographystyle{apa}
 %\bibliography{References_Final}
 \end{document}

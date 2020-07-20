@@ -548,6 +548,46 @@ EPE(x_0)&=&\sigma^2(y_0\mid x_0)+\E_{y_0\mid x_0}\E_T[(g(x_0)-\E_T[\hat{y}_0])^2
 &=&\sigma^2(y_0\mid x_0)+Bias^2(\hat{y}_0)+\sigma_T^2(\hat{y}_0)
 \end{eqnarray*}
 \end{frame}
+\section{Maximum likelihood estimation}
+\begin{frame}{Maximum likelihood estimation}
+For a random sample $\{y_i\}_{i=1}^{N}$ from a density function $P_{\theta}[y]$ indexed by some parameters $\theta$, the likelihood function is
+\begin{equation}\label{eq: likelihood}
+ L(\theta)=\prod\limits_{i=1}^{N}P_{\theta}[y_i]
+\end{equation}
+while the log-likelihood function is given by
+\begin{equation}\label{eq: log likelihood}
+ l(\theta)=\sum\limits_{i=1}^{N}P_{\theta}[y_i]
+\end{equation}
+Assuming with the additive error model is of the form
+\[
+Y=g_{\theta}(X)+\varepsilon,\quad \varepsilon\sim N(g_{\theta}(X),\sigma^2)
+\]
+then the log-likelihoof function of data is derived as follows:
+\end{frame}
+\begin{frame}
+We know that the conditional normal distribution function is
+\[
+F(y\mid g_{\theta}(x))=\frac{1}{\sigma\sqrt{2\pi}}\int_{-\infty}^{y}\exp\left(\frac{-(y-g_{\theta}(x))^2}{2\sigma^2}\right)
+\]
+with a density function
+\[
+f(y\mid g_{\theta}(x))=\frac{1}{\sigma\sqrt{2\pi}}\exp\left(\frac{-(y-g_{\theta}(x))^2}{2\sigma^2}\right)
+\]
+thus,
+\begin{eqnarray*}
+l(\theta)&=&\sum\limits_{i=1}^N\log\left(\frac{1}{\sigma\sqrt{2\pi}}\exp\left(\frac{-(y-g_{\theta}(x))^2}{2\sigma^2}\right)\right)\\
+&=&N\log\left(\frac{1}{\sigma\sqrt{2\pi}}\right)+\sum\limits_{i=1}^N\log\left(\exp\left(\frac{-(y-g_{\theta}(x))^2}{2\sigma^2}\right)\right)\\
+&=&-N\log(\sigma\sqrt{2\pi})+\sum\limits_{i=1}^N\left(\frac{-(y-g_{\theta}(x))^2}{2\sigma^2}\right)
+\end{eqnarray*}
+\end{frame}
+\begin{frame}
+\begin{eqnarray*}
+l(\theta)&=&-N\log(\sigma\sqrt{2\pi})-\frac{1}{2\sigma^2}\sum\limits_{i=1}^N\left(y_i-g_{\theta}(x_i)\right)^2\\
+&=&-N\log(\sigma)-N\log(\sqrt{2\pi})-\frac{1}{2\sigma^2}\sum\limits_{i=1}^N\left(y_i-g_{\theta}(x_i)\right)^2\\
+&=&-N\log(\sigma)-\frac{N}{2}\log(2\pi)-\frac{1}{2\sigma^2}\sum\limits_{i=1}^N\left(y_i-g_{\theta}(x_i)\right)^2
+\end{eqnarray*}
+which is the proof of equation (2.35) in the book.
+\end{frame}
 %\bibliographystyle{apa}
 %\bibliography{References_Final}
 \end{document}

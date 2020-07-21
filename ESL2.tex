@@ -1,0 +1,95 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[document]{ragged2e}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{float}
+\usepackage{subfigure}
+\usepackage[round]{natbib}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+
+\title{Elements of statistical learning:
+Chapter 3}
+\centering
+\begin{document}
+\maketitle
+
+\begin{frame}{Content}
+\tableofcontents
+\end{frame}
+
+\section{Linear models}
+
+\begin{frame}{LS estimator}
+Let $\bm{X}$ be an $N\times(p+1)$ matrix of explanatory variables and $\bm{y}$ an $N\times 1$ vector of outputs. Then we know the LS estimator $\hat{\beta}$
+\[
+\hat{\beta}=(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{y},
+\]
+ [see lecture slides "ESL1" for recap and proof]. 
+\begin{block}{The "hat" matrix}
+As such for the fitted linear model
+\begin{eqnarray*}
+\hat{y}&=&\bm{X}\hat{\beta}\\
+&=&\underbrace{\bm{X}(\bm{X}'\bm{X})^{-1}\bm{X}'}_{\bm{H}}\bm{y}\\
+&=&\bm{H}\bm{y}
+\end{eqnarray*}
+where $\bm{H}$ is commonly referred to as the hat matrix.
+\end{block}
+\end{frame}
+
+\begin{frame}{$\bm{H}$ the projection matrix}
+Let us denote the column vectors of $\bm{X}$ by $\bm{x}_0,\bm{x}_1,\cdots,\bm{x}_p$ with $\bm{x}_0\equiv 1$.
+\begin{itemize}
+\item{} These vectors span a subspace of $\R^N$, also referred to as a column vector of $\bm{X}$.
+\item{} We minimize $RSS(\beta)=\lvert\lvert \bm{y}-\bm{X}\beta\rvert\rvert^2$ by choosing $\hat{\beta}$, so that the residual vector $\bm{y}-\hat{\bm{y}}$ is orthogonal to this subspace.
+\item{} the hat matrix $\bm{H}$ computes the orthogonal projection, and hence it is also known as the projection matrix.
+\end{itemize}
+\end{frame}
+
+\subsection{Sampling properties of $\hat{\beta}$}
+\begin{frame}{Variance-covariance matrix}
+\begin{block}{Assumptions}
+\begin{enumerate}
+\item{} Observations $y_i$ are uncorrelated have constant variance $\sigma^2$
+\item{} $x_i$ are fixed (i.e. non-stochastic)
+\end{enumerate}
+\end{block}
+\begin{eqnarray*}
+var(\hat{\beta})&=&var\left[(\bm{X}'\bm{X})^{-1}(\bm{X}'\bm{X})\beta+(\bm{X}'\bm{X})^{-1}\epsilon\right]\\
+&=&var\left[(\bm{X}'\bm{X})^{-1}\epsilon\right]\\
+&=&\E\left\{(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{\epsilon}[(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{\epsilon}]'\right\}\\
+&=&\E\left\{(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{\epsilon}\bm{\epsilon}'\bm{X}(\bm{X}'\bm{X})^{-1}\right\}\\
+&=&\E\left\{(\bm{X}'\bm{X})^{-1}(\bm{X}'\bm{X})\bm{\epsilon}\bm{\epsilon}'(\bm{X}'\bm{X})^{-1}\right\}
+\end{eqnarray*}
+\end{frame}
+
+\begin{frame}
+Note that $\epsilon$ is the error term and has zero mean and also remember that $\bm{X}$ is fixed, and thus 
+\[
+\E[aZ]=a\E[Z]
+\]
+where $Z$ is a random variable and $a$ is a constant. Therefore, 
+\begin{eqnarray*}
+var(\hat{\beta})&=&\E\left\{\bm{\epsilon}\bm{\epsilon}'(\bm{X}'\bm{X})^{-1}\right\}\\
+&=&(\bm{X}'\bm{X})^{-1}E\left\{\bm{\epsilon}\bm{\epsilon}'\right\}\\
+&=&(\bm{X}'\bm{X})^{-1}\sigma^2
+\end{eqnarray*}
+where $\sigma^2$ can be calculated by
+\[
+\sigma^2=\frac{1}{N-p-1}\sum\limits_{i=1}^N(y_i-\hat{y}_i)^2
+\]
+thus, assuming the errors are further Gaussian
+\[
+\hat{\beta}\sim N(\beta,(\bm{X}'\bm{X})^{-1}\sigma^2)
+\]
+\end{frame}
+%\bibliographystyle{apa}
+%\bibliography{References_Final}
+\end{document}

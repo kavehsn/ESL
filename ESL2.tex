@@ -90,6 +90,21 @@ thus, assuming the errors are further Gaussian
 \hat{\beta}\sim N(\beta,(\bm{X}'\bm{X})^{-1}\sigma^2)
 \]
 \end{frame}
+\subsection{Gauss-Markov Theorem}
+\begin{frame}{Gauss-Markov Theorem}
+Least squares estimator of parameter $\beta$ has the smallest variance among all linear unbiased estimators.
+Why is the LS estimator unbiased?
+\begin{proof}
+\begin{eqnarray*}
+\hat{\beta}&=&\E[\hat{\beta}]\\
+&=&\E[(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{y}]\\
+&=&\E[(\bm{X}'\bm{X})^{-1}\bm{X}'(\bm{X}\beta+\bm{\epsilon})]\\
+&=&\E[\beta+(\bm{X}'\bm{X})^{-1}\bm{\epsilon}]\\
+&=&\beta+(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{X}\E[\bm{\epsilon}]\\
+&=&\beta
+\end{eqnarray*}
+\end{proof}
+\end{frame}
 %\bibliographystyle{apa}
 %\bibliography{References_Final}
 \end{document}

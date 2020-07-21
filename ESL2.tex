@@ -62,8 +62,10 @@ Let us denote the column vectors of $\bm{X}$ by $\bm{x}_0,\bm{x}_1,\cdots,\bm{x}
 \end{enumerate}
 \end{block}
 \begin{eqnarray*}
-var(\hat{\beta})&=&var\left[(\bm{X}'\bm{X})^{-1}(\bm{X}'\bm{X})\beta+(\bm{X}'\bm{X})^{-1}\epsilon\right]\\
-&=&var\left[(\bm{X}'\bm{X})^{-1}\epsilon\right]\\
+var(\hat{\beta})&=&var\left[(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{y}\right]\\
+&=&var\left[(\bm{X}'\bm{X})^{-1}\bm{X}'(\bm{X}\beta+\epsilon)\right]\\
+&=&var\left[(\bm{X}'\bm{X})^{-1}(\bm{X}'\bm{X})\beta+(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{\epsilon}\right]\\
+&=&var\left[(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{\epsilon}\right]\\
 &=&\E\left\{(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{\epsilon}[(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{\epsilon}]'\right\}\\
 &=&\E\left\{(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{\epsilon}\bm{\epsilon}'\bm{X}(\bm{X}'\bm{X})^{-1}\right\}\\
 &=&\E\left\{(\bm{X}'\bm{X})^{-1}(\bm{X}'\bm{X})\bm{\epsilon}\bm{\epsilon}'(\bm{X}'\bm{X})^{-1}\right\}
@@ -99,8 +101,8 @@ Why is the LS estimator unbiased?
 \hat{\beta}&=&\E[\hat{\beta}]\\
 &=&\E[(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{y}]\\
 &=&\E[(\bm{X}'\bm{X})^{-1}\bm{X}'(\bm{X}\beta+\bm{\epsilon})]\\
-&=&\E[\beta+(\bm{X}'\bm{X})^{-1}\bm{\epsilon}]\\
-&=&\beta+(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{X}\E[\bm{\epsilon}]\\
+&=&\E[\beta+(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{\epsilon}]\\
+&=&\beta+(\bm{X}'\bm{X})^{-1}\bm{X}'\E[\bm{\epsilon}]\\
 &=&\beta
 \end{eqnarray*}
 \end{proof}

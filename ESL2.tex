@@ -107,6 +107,61 @@ Why is the LS estimator unbiased?
 \end{eqnarray*}
 \end{proof}
 \end{frame}
+
+\section{Multiple regression}
+\subsection{From simple univariate to multiple regressions}
+\begin{frame}{From simple univariate to muliple regressions}
+Suppose first we have a univariate model with no intercept
+\[
+Y_i=X_i\beta+\varepsilon_i
+\]
+The least squares estimates and residuals are
+\[
+\hat{\beta}=\frac{\sum\limits_{i=1}^{N}x_iy_i}{\sum\limits_{i=1}^{N}x_i^2}
+\]
+with residuals
+\[
+r_i=y_i-x_i\hat{\beta}
+\]
+which in vector notation can be expressed as 
+\[
+<\bm{x},\bm{y}>=\sum\limits_{i=1}^{N}x_iy_i=\bm{x}'\bm{y}
+\] 
+which is the inner product between $\bm{x}$ and $\bm{y}$.
+\end{frame}
+
+\begin{frame}
+Thus, the OLS estimator $\hat{\beta}$ can be expressed as follows
+\[
+\hat{\beta}=\frac{<\bm{x},\bm{y}>}{<\bm{x},\bm{x}>},
+\]
+Suppose now that we have $p$ inputs $\bm{x}_1,\cdots,\bm{x}_p$, which are the columns of the matrix $\bm{X}$ and are orthogonal, such that $<\bm{x}_j,\bm{x}_k>=0$ for all $i\neq j$. When the inputs are orthogonal, the multiple least squares estimates $\hat{\beta}_j$ are equal tothe univariate estimates - i.e. 
+\[
+\hat{\beta}_j=\frac{<\bm{x}_j,\bm{y}>}{<\bm{x}_j,\bm{x}_j>}
+\] 
+In other words, the inputs are orthogonal and have no impact on each other's parameters estimates in the model.
+\end{frame}
+
+\begin{frame}
+Consider the case of an intercept and a single input $\bm{x}$, then the least squares coefficient of $\bm{x}$ has the form
+\[
+\hat{\beta}_1=\frac{<\bm{x}-\bar{x}\bm{1},\bm{y}>}{<\bm{x}-\bar{x}\bm{1},\bm{x}-\bar{x}\bm{1}>}
+\]
+The steps of the algorithm can be seen as follows
+\begin{enumerate}
+\item{} Regress $\bm{x}$ on $\bm{1}$ to obtain $\bar{x}\bm{1}$
+
+\item{} Obtain the residuals $\bm{z}=\bm{x}-\bar{x}\bm{1}$
+
+\item{} Regress $\bm{y}$ on $\bm{z}$ to obtain the coefficient $\hat{\beta}_1$
+\end{enumerate}
+\[
+\hat{\beta}_1=\frac{<\bm{z},\bm{y}>}{<\bm{z},\bm{z}>}
+\]
+Step 1 orthogonalizes $x$ with respect to $x_o=1$.  
+\end{frame}
+
+
 %\bibliographystyle{apa}
 %\bibliography{References_Final}
 \end{document}

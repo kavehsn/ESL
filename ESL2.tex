@@ -265,6 +265,27 @@ Thus, the solution to ridge regression can easily be seen
 &=&(\X'\X+\lambda\bm{I})^{-1}\X'\y
 \end{eqnarray*}
 \end{frame}
+\subsection{SVD of ridge regression}
+\begin{frame}{SVD of ridge regression}
+The SVD of the $N\times p$ matrix $\X$ has the form
+\[
+\X=\bm{U}_{N\times N}\bm{D}_{N\times p}\bm{V}_{p\times p}'
+\]
+where $\bm{U}$ and $\bm{V}$ are orthogonal - i.e. 
+\[
+\bm{U}'\bm{U}=\bm{I},\quad \bm{V}'\bm{V}=\bm{I}
+\]
+(For a quick review of SVD, \href{https://mathworld.wolfram.com/SingularValueDecomposition.html}{click here}.)
+
+Using the singular value decomposition, we can write the least squares fitted vector as 
+\begin{eqnarray*}
+\hat{y}=\X\hat{\beta}_{ls}&=&\X(\X'\X)^{-1}\X'\y\\
+&=&\bm{UDV}[(\bm{UDV})'\bm{UDV})]^{-1}(\bm{UDV})'\y\\
+&=&\bm{UDV}[\bm{V}'\bm{D}'\bm{U}'\bm{UDV}]^{-1}\bm{V}'\bm{D}'\bm{U}'\y\\
+&=&\bm{UDV}[\bm{D}'\bm{D}]^{-1}\bm{V'}\bm{D'}\bm{U'}\\
+&=&\bm{UU}'
+\end{eqnarray*}
+\end{frame}
 %\bibliographystyle{apa}
 %\bibliography{References_Final}
 \end{document}

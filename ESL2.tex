@@ -10,10 +10,21 @@
 \usepackage{placeins}
 \usepackage{float}
 \usepackage{subfigure}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
 \usepackage[round]{natbib}
 
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\R}{\mathbb{R}}
+\newcommand{\x}{\bm{x}}
+\newcommand{\X}{\bm{X}}
+\newcommand{\z}{\bm{z}}
+\newcommand{\y}{\bm{y}}
 
 \title{Elements of statistical learning:
 Chapter 3}
@@ -158,10 +169,75 @@ The steps of the algorithm can be seen as follows
 \[
 \hat{\beta}_1=\frac{<\bm{z},\bm{y}>}{<\bm{z},\bm{z}>}
 \]
-Step 1 orthogonalizes $x$ with respect to $x_o=1$.  
+Step 1 orthogonalizes $x$ with respect to $\bm{x}_0=1$.  
+\end{frame}
+\subsection{The Gram-Schmidt algorithm}
+\begin{frame}{The Gram-Schmidt algorithm}
+The idea is similar in the presence of more predictors. In the case of two predictors and an intercept, say, $\bm{x}_0=1, \bm{x}_1,\bm{x}_2$.
+\begin{enumerate}
+ \item{} First regress $\bm{x}_1$ on $\bm{x}_0=1$ and obtain the residual vector $\bm{z}_1=\bm{x}_1-\bar{x}\bm{1}$
+
+\item{} Then regress $\bm{x}_2$ on $\x_0=1$ and $\z_1$ to produce the coefficients $\hat{\gamma}_1$ and obtain the residual vector $\z_2=\x_2-\bar{x}1-\hat{\gamma}_1\z_1$
+
+\item{} Regress $\y$ on the residual $\z_p$ to get the estimate $\hat{\beta}_p$.
+\end{enumerate}
+This algorithm can alternatively be expressed in matrix format. In other words, the second step can be written as follows
+\[
+\X=\bm{Z}\bm{\Gamma}
+\]
+(\textbf{Note:} For a review of QR decomposition and its application to Gram-Schmidt algorithm, \href{http://www.seas.ucla.edu/~vandenbe/133A/lectures/qr.pdf}{click here})
 \end{frame}
 
-
+\begin{frame}
+with 
+\[
+\bm{Z}=
+\begin{bmatrix}
+1 & z_{11} & \cdots & z_{1p}\\
+1& z_{21} &\cdots&z_{2p}\\
+\vdots&\vdots&\ddots&\vdots\\
+1& z_{N1}&\cdots &z_{Np}
+\end{bmatrix}\quad\text{and}\quad
+\bm{\Gamma}=
+\begin{bmatrix}
+\bar{x}&\bar{x}&\bar{x}&\cdots&\bar{x}\\
+&\hat{\gamma}_{1}&\hat{\gamma}_{1}&\cdots&\hat{\gamma}_1\\
+&&\hat{\gamma}_{2}&\cdots& \hat{\gamma}_2\\
+&&&\ddots&\vdots\\
+0&&&&\hat{\gamma}_p
+\end{bmatrix}
+\]
+we then introduce a diagonal matrix $\bm{D}$ with $j^{\text{th}}$ diagonal entry $D_{jj}=\lvert\lvert z_j\rvert\rvert$, - i.e. 
+\[
+\bm{D}=
+\begin{bmatrix}
+\lvert\lvert z_0\rvert\rvert&0&\cdots&0\\
+0&\lvert\lvert z_1\rvert\rvert&\cdots&0\\
+\vdots&\vdots&\ddots&\vdots\\
+0&0&\cdots&\lvert\lvert z_p\rvert\rvert
+\end{bmatrix}
+\]
+and we express the matrix $X$ as follows
+\[
+\X=\bm{Z}\bm{D}^{-1}\bm{D}\bm{\Gamma}
+\]
+\end{frame}
+\begin{frame}
+Noting that $\bm{Q}=\bm{Z}\bm{D}^{-1}$ is $N\times (p+1)$ with orthonormal columns, - i.e. $\bm{Q}'\bm{Q}=\bm{I}$ and $\bm{D\Gamma}$ is a $(p+1)\times(p+1)$ upper triangular matrix. 
+Thus, the least squares estimator is given by
+\begin{eqnarray*}
+\hat{\beta}=(\X'\X)^{-1}\X'\bm{y}&=&[(\bm{Q}\bm{R})'(\bm{Q}\bm{R})]^{-1}\bm{Q}'\bm{R}\bm{y}\\
+&=&[\bm{R}'\bm{Q}'\bm{Q}\bm{R}]^{-1}\bm{Q}'\bm{R}\bm{y}\\
+&=&[\bm{R}'\bm{I}\bm{R}]^{-1}\bm{Q}'\bm{R}\bm{y}\\
+&=&\bm{R}^{-1}\bm{Q}'y
+\end{eqnarray*}
+similarly,
+\begin{eqnarray*}
+\hat{y}&=&X\hat{\beta}\\
+&=&(\bm{QR})(\bm{R}^{-1}\bm{Q}'y)\\
+&=&\bm{Q}\bm{Q}'\bm{y}
+\end{eqnarray*}
+\end{frame}
 %\bibliographystyle{apa}
 %\bibliography{References_Final}
 \end{document}

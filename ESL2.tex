@@ -238,6 +238,33 @@ similarly,
 &=&\bm{Q}\bm{Q}'\bm{y}
 \end{eqnarray*}
 \end{frame}
+\section{Shrinkage methods}
+\subsection{Ridge regression}
+\begin{frame}{Ridge regression}
+\begin{block}{Shrinkage methods}
+Shrinkage methods shrink the regression coefficients by imposing a penalty on their size. The most notable shrinkage methods are the \textit{Lasso} and \textit{Ridge regressions}.
+\end{block}
+The ridge coefficients minimize a penalized residual sum of squares:
+\begin{equation}\label{eq: ridge}
+\hat{\beta}_{Ridge}=\arg\min_{\beta}\left\{\sum\limits_{i=1}^{N}(y_i-\beta_0-\sum\limits_{j=1}^{p}x_{ij}\beta_j)^2+\lambda\sum\limits_{j=1}^{p}\beta_j^2)\right\}
+\end{equation}
+Here $\lambda\geq0$ is a complexity parameter that controls the amount of shrinkage.
+\end{frame}
+\begin{frame}
+For reasons outlined in age 65 of the book, let us centre the inpute $x_{ij}$ by $x_{ij}-\bar{x}_j$ and we estimate $\beta_0$ by $\bar{y}=\frac{1}{N}\sum\limits_{i=1}^{N}y_i$. Thus, the remaining coefficients gets estimated by a ridge regression without an intercept, where $\X$ has $p$ instead of $(p+1)$ columns. Henceforth, rekationship (\ref{eq: ridge}) can instead be expressed in the matrix format as follows
+\[
+\text{RSS}(\lambda)=(\y-\X\beta)'(\y-\X\beta)+\lambda\beta'\beta
+\]
+Thus, the solution to ridge regression can easily be seen
+\begin{eqnarray*}
+\hat{\beta}_{Ridge}&=&\arg\min_{\beta}\left\{(\y-\X\beta)'(\y-\X\beta)+\lambda\beta'\beta\right\}\\
+&=&\arg\min_{\beta}\left\{(\y'-\beta'\X')(\y-\X\beta)+\lambda\beta'\beta\right\}\\
+&=&\arg\min_{\beta}\left\{(\y'\y-\y'\X\beta-\beta'\X'\y+\beta'\X'\X\beta)+\lambda\beta'\beta\right\}\\
+&=&-\X'\y-\X'\y+2\beta\X'\X+2\lambda\beta=0\\
+&=&\beta(\X'\X+\lambda\bm{I})=\X'\y\\
+&=&(\X'\X+\lambda\bm{I})^{-1}\X'\y
+\end{eqnarray*}
+\end{frame}
 %\bibliographystyle{apa}
 %\bibliography{References_Final}
 \end{document}

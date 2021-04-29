@@ -136,7 +136,7 @@ r_i=y_i-x_i\hat{\beta}
 \]
 which in vector notation can be expressed as 
 \[
-<\bm{x},\bm{y}>=\sum\limits_{i=1}^{N}x_iy_i=\bm{x}'\bm{y}
+\langle\bm{x},\bm{y}\rangle=\sum\limits_{i=1}^{N}x_iy_i=\bm{x}'\bm{y}
 \] 
 which is the inner product between $\bm{x}$ and $\bm{y}$.
 \end{frame}
@@ -144,11 +144,11 @@ which is the inner product between $\bm{x}$ and $\bm{y}$.
 \begin{frame}
 Thus, the OLS estimator $\hat{\beta}$ can be expressed as follows
 \[
-\hat{\beta}=\frac{<\bm{x},\bm{y}>}{<\bm{x},\bm{x}>},
+\hat{\beta}=\frac{\langle\bm{x},\bm{y}\rangle}{\langle\bm{x},\bm{x}\rangle},
 \]
-Suppose now that we have $p$ inputs $\bm{x}_1,\cdots,\bm{x}_p$, which are the columns of the matrix $\bm{X}$ and are orthogonal, such that $<\bm{x}_j,\bm{x}_k>=0$ for all $i\neq j$. When the inputs are orthogonal, the multiple least squares estimates $\hat{\beta}_j$ are equal tothe univariate estimates - i.e. 
+Suppose now that we have $p$ inputs $\bm{x}_1,\cdots,\bm{x}_p$, which are the columns of the matrix $\bm{X}$ and are orthogonal, such that $\langle\bm{x}_j,\bm{x}_k\rangle=0$ for all $i\neq j$. When the inputs are orthogonal, the multiple least squares estimates $\hat{\beta}_j$ are equal tothe univariate estimates - i.e. 
 \[
-\hat{\beta}_j=\frac{<\bm{x}_j,\bm{y}>}{<\bm{x}_j,\bm{x}_j>}
+\hat{\beta}_j=\frac{\langle\bm{x}_j,\bm{y}\rangle}{\langle\bm{x}_j,\bm{x}_j\rangle}
 \] 
 In other words, the inputs are orthogonal and have no impact on each other's parameters estimates in the model.
 \end{frame}
@@ -156,7 +156,7 @@ In other words, the inputs are orthogonal and have no impact on each other's par
 \begin{frame}
 Consider the case of an intercept and a single input $\bm{x}$, then the least squares coefficient of $\bm{x}$ has the form
 \[
-\hat{\beta}_1=\frac{<\bm{x}-\bar{x}\bm{1},\bm{y}>}{<\bm{x}-\bar{x}\bm{1},\bm{x}-\bar{x}\bm{1}>}
+\hat{\beta}_1=\frac{\langle\bm{x}-\bar{x}\bm{1},\bm{y}\rangle}{\langle\bm{x}-\bar{x}\bm{1},\bm{x}-\bar{x}\bm{1}\rangle}
 \]
 The steps of the algorithm can be seen as follows
 \begin{enumerate}
@@ -167,7 +167,7 @@ The steps of the algorithm can be seen as follows
 \item{} Regress $\bm{y}$ on $\bm{z}$ to obtain the coefficient $\hat{\beta}_1$
 \end{enumerate}
 \[
-\hat{\beta}_1=\frac{<\bm{z},\bm{y}>}{<\bm{z},\bm{z}>}
+\hat{\beta}_1=\frac{\langle\bm{z},\bm{y}\rangle}{\langle\bm{z},\bm{z}\rangle}
 \]
 Step 1 orthogonalizes $x$ with respect to $\bm{x}_0=1$.  
 \end{frame}
@@ -226,9 +226,9 @@ and we express the matrix $X$ as follows
 Noting that $\bm{Q}=\bm{Z}\bm{D}^{-1}$ is $N\times (p+1)$ with orthonormal columns, - i.e. $\bm{Q}'\bm{Q}=\bm{I}$ and $\bm{D\Gamma}$ is a $(p+1)\times(p+1)$ upper triangular matrix. 
 Thus, the least squares estimator is given by
 \begin{eqnarray*}
-\hat{\beta}=(\X'\X)^{-1}\X'\bm{y}&=&[(\bm{Q}\bm{R})'(\bm{Q}\bm{R})]^{-1}\bm{Q}'\bm{R}\bm{y}\\
-&=&[\bm{R}'\bm{Q}'\bm{Q}\bm{R}]^{-1}\bm{Q}'\bm{R}\bm{y}\\
-&=&[\bm{R}'\bm{I}\bm{R}]^{-1}\bm{Q}'\bm{R}\bm{y}\\
+\hat{\beta}=(\X'\X)^{-1}\X'\bm{y}&=&[(\bm{Q}\bm{R})'(\bm{Q}\bm{R})]^{-1}(\bm{Q}\bm{R})'\bm{y}\\
+&=&[\bm{R}'\bm{Q}'\bm{Q}\bm{R}]^{-1}\bm{R}'\bm{Q}'\bm{y}\\
+&=&[\bm{R}'\bm{I}\bm{R}]^{-1}\bm{R}'\bm{Q}'\bm{y}\\
 &=&\bm{R}^{-1}\bm{Q}'y
 \end{eqnarray*}
 similarly,
@@ -280,9 +280,9 @@ where $\bm{U}$ and $\bm{V}$ are orthogonal - i.e.
 Using the singular value decomposition, we can write the least squares fitted vector as 
 \begin{eqnarray*}
 \hat{y}=\X\hat{\beta}_{ls}&=&\X(\X'\X)^{-1}\X'\y\\
-&=&\bm{UDV}[(\bm{UDV})'\bm{UDV})]^{-1}(\bm{UDV})'\y\\
-&=&\bm{UDV}[\bm{V}'\bm{D}'\bm{U}'\bm{UDV}]^{-1}\bm{V}'\bm{D}'\bm{U}'\y\\
-&=&\bm{UDV}[\bm{D}'\bm{D}]^{-1}\bm{V'}\bm{D'}\bm{U'}\y\\
+&=&\bm{UDV}'[(\bm{UDV}')'\bm{UDV}')]^{-1}(\bm{UDV}')'\y\\
+&=&\bm{UDV}'[\bm{V}\bm{D}'\bm{U}'\bm{UDV}']^{-1}\bm{V}\bm{D}'\bm{U}'\y\\
+&=&\bm{UDV}'\bm{V}\bm{D}^{-2}\bm{V}'\bm{V}\bm{D}\bm{U'}\y\\
 &=&\bm{UU}'\y
 \end{eqnarray*}
 \end{frame}
@@ -291,9 +291,11 @@ Using the singular value decomposition, we can write the least squares fitted ve
 Now for the ridge regression, we would have
 \begin{eqnarray*}
 \hat{y}=\X\hat{\beta}_{ridge}&=&\X(\X'\X+\lambda\bm{I})^{-1}\X'\y\\
-&=&\bm{UDV}[(\bm{UDV})'\bm{UDV}+\lambda\bm{I}]^{-1}(\bm{UDV})'\y\\
-&=&\bm{UDV}[\bm{V}'\bm{D}'\bm{U}'\bm{UDV}+\lambda\bm{I}]^{-1}\bm{V}'\bm{D}'\bm{U}'\y\\
-&=&\bm{U}\bm{D}[\bm{D}'\bm{D}+\lambda\bm{I}]^{-1}\bm{D}'\bm{U}\y
+&=&\bm{UDV}'[(\bm{UDV}')'\bm{UDV}'+\lambda\bm{I}]^{-1}(\bm{UDV}')'\y\\
+&=&\bm{UDV}'[\bm{V}\bm{D}\bm{U}'\bm{UDV}'+\lambda\bm{V}\bm{V}']^{-1}\bm{V}\bm{D}\bm{U}'\y\\
+&=&\bm{UDV}'[\bm{V}(\bm{D}^2+\lambda)\bm{V}']^{-1}\bm{VDU}'\y\\
+&=&\bm{UDV}'\bm{V}(\bm{D}^2+\lambda)^{-1}\bm{VDU}'\y\\
+&=&UD(\bm{D}^2+\lambda)^{-1}\bm{DU}'\y
 \end{eqnarray*}
 \end{frame}
 %\bibliographystyle{apa}
